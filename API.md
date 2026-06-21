@@ -111,7 +111,7 @@ them up directly.
 
 | Param   | Type     | Required | Description                                                              |
 | ------- | -------- | -------- | ------------------------------------------------------------------------ |
-| `names` | `string` | yes      | Comma-separated AUR package names. Whitespace is trimmed, blanks/dupes dropped. Max **200** names per request. |
+| `names` | `string` | yes      | Comma-separated AUR package names. Whitespace is trimmed, blanks/dupes dropped. Max **1000** names per request. |
 
 Each name resolves to its newest modification via the `aur-package-latest`
 index, then to that record's full `PackageResult`.
