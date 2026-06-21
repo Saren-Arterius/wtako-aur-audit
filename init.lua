@@ -4,7 +4,13 @@ local API = "https://aur-audit.wtako.net/package-analysis?names="
 local level = yay.opt.aur_audit_filter or "black"
 local all_warnings, RECENT = {}, 1782000000
 
+local function sanitize(names)
+    return (names:gsub("[^0-9a-z-,_]", ""))
+end
+
 local function get_audit(names)
+    names = sanitize(names)
+    if #names == 0 then return {} end
     local ok, data = pcall(json.decode, io.popen("curl -s --max-time 3 " .. API .. names):read("*a"))
     return ok and data and data.packages or {}
 end
