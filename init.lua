@@ -5,7 +5,7 @@ local level = yay.opt.aur_audit_filter or "black"
 local all_warnings, RECENT = {}, 1782000000
 
 local function sanitize(names)
-    return (names:gsub("[^0-9a-z-,_]", ""))
+    return (names:gsub("[^0-9a-z,_-]", ""))
 end
 
 local function get_audit(names)
