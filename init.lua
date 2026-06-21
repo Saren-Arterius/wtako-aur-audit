@@ -5,13 +5,20 @@ local level = yay.opt.aur_audit_filter or "black"
 local all_warnings, RECENT = {}, 1782000000
 
 local function sanitize(names)
-    return (names:gsub("[^0-9a-z,_-]", ""))
+    return (names:lower():gsub("[^0-9a-z,_-]", ""))
 end
 
 local function get_audit(names)
     names = sanitize(names)
     if #names == 0 then return {} end
-    local ok, data = pcall(json.decode, io.popen("curl -s --max-time 3 " .. API .. names):read("*a"))
+
+    local handle = io.popen("curl -s --max-time 3 " .. API .. names)
+    if not handle then return {} end
+
+    local response = handle:read("*a")
+    handle:close()
+
+    local ok, data = pcall(json.decode, response)
     return ok and data and data.packages or {}
 end
 
@@ -46,7 +53,13 @@ local function flush_warnings()
     if #all_warnings == 0 then
         return
     end
-    local f = io.open("/tmp/yay-aur-audit-warn.txt", "w")
+
+    math.randomseed(os.time())
+    local tmp_secure = string.format("/tmp/yay-audit-%d-%d.txt", os.time(), math.random(10000, 99999))
+
+    local f = io.open(tmp_secure, "w")
+    if not f then return end
+
     f:write(
         "\033[2K\r========== ⚠️  AUR AUDIT by wtako.net ⚠️  ==========\n",
         table.concat(all_warnings, "\n"),
@@ -54,22 +67,39 @@ local function flush_warnings()
     )
     f:close()
     all_warnings = {}
-    os.execute("sleep 0.1 && cat /tmp/yay-aur-audit-warn.txt >&2 && rm /tmp/yay-aur-audit-warn.txt &")
+
+    local cmd = string.format("sleep 0.1 && cat %s >&2 && rm -f %s &", tmp_secure, tmp_secure)
+    os.execute(cmd)
 end
 
 local function skip(a, lvl)
-    return (lvl == "black" and #a.blackFlags > 0)
-        or (lvl == "red" and (#a.blackFlags > 0 or #a.redFlags > 0))
-        or (lvl == "yellow" and (#a.blackFlags > 0 or #a.redFlags > 0 or #a.yellowFlags > 0))
+    local black_cnt = a.blackFlags and #a.blackFlags or 0
+    local red_cnt = a.redFlags and #a.redFlags or 0
+    local yellow_cnt = a.yellowFlags and #a.yellowFlags or 0
+
+    return (lvl == "black" and black_cnt > 0)
+        or (lvl == "red" and (black_cnt > 0 or red_cnt > 0))
+        or (lvl == "yellow" and (black_cnt > 0 or red_cnt > 0 or yellow_cnt > 0))
 end
 
 yay.create_autocmd("UpgradeSelect", {
     desc = "exclude flagged packages",
     callback = function(e)
         local excl = {}
+        local names = {}
+
+        -- Fixed: Gather all package names first to execute ONE batch query
         for _, pkg in ipairs(e.data.upgrades) do
             if pkg.repository == "aur" then
-                local a = get_audit(pkg.name)[pkg.name]
+                names[#names + 1] = pkg.name
+            end
+        end
+
+        local audits = get_audit(table.concat(names, ","))
+
+        for _, pkg in ipairs(e.data.upgrades) do
+            if pkg.repository == "aur" then
+                local a = audits[pkg.name]
                 if a then
                     check(a, pkg.name)
                     if skip(a, level) then
