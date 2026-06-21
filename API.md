@@ -136,7 +136,7 @@ index, then to that record's full `PackageResult`.
 
 - `Missing required query parameter: names`
 - `No package names provided`
-- `Too many names (max 200)`
+- `Too many names (max 1000)`
 
 ### Examples
 
