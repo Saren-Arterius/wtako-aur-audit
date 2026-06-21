@@ -46,15 +46,9 @@ The integration works transparently - just use yay normally:
 - **Install**: Blocked packages are rejected with an error message
 
 ## Example Output
+![](https://drop.wtako.net/file/2c2425f854673e2d8d2e81102d183ce57e53160e.png)
 
-```
-==> 要安裝的套件包 (例如: 1 2 3, 1-3 或 ^4)
-==> 1
-========== ⚠️  AUR AUDIT by wtako.net ⚠️  ==========
-🟡 some-package: Network download (curl/wget) detected in PKGBUILD
-❓ another-package: Scanning in progress
-==================================================
-```
+![](https://drop.wtako.net/file/ee9c863c9275b971ac7b35f32a0e0879a023dd05.png)
 
 ## API Documentation
 
