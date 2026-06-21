@@ -59,8 +59,8 @@ end
 
 local function skip(a, lvl)
     return (lvl == "black" and #a.blackFlags > 0)
-        or (lvl == "red" and #a.redFlags > 0)
-        or (lvl == "yellow" and #a.yellowFlags > 0)
+        or (lvl == "red" and (#a.blackFlags > 0 or #a.redFlags > 0))
+        or (lvl == "yellow" and (#a.blackFlags > 0 or #a.redFlags > 0 or #a.yellowFlags > 0))
 end
 
 yay.create_autocmd("UpgradeSelect", {
