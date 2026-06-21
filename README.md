@@ -60,7 +60,7 @@ The integration works transparently - just use yay normally:
 
 Uses the public [WTAKO AUR Audit API](https://aur-audit.wtako.net) for threat detection. No cache or local database required - all analysis happens server-side. Refer to https://github.com/Saren-Arterius/wtako-aur-audit/blob/main/API.md for API documentation.
 
-The server's source code is purposfully made unavailable.
+The server's source code is purposefully made unavailable.
 
 ## License
 
