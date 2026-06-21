@@ -1,6 +1,8 @@
 # wtako-aur-audit
 
-AUR package security auditing for yay, powered by the [aur-audit.wtako.net](https://aur-audit.wtako.net) API. See a frontend at https://wtako.net/services/aur-audit
+AUR package security auditing for yay, powered by the [aur-audit.wtako.net](https://aur-audit.wtako.net) API. 
+
+See the frontend at https://wtako.net/services/aur-audit
 
 ## Features
 
@@ -56,7 +58,9 @@ The integration works transparently - just use yay normally:
 
 ## API Documentation
 
-Uses the public [wtako AUR Audit API](https://aur-audit.wtako.net) for threat detection. No cache or local database required - all analysis happens server-side.
+Uses the public [WTAKO AUR Audit API](https://aur-audit.wtako.net) for threat detection. No cache or local database required - all analysis happens server-side. Refer to https://github.com/Saren-Arterius/wtako-aur-audit/blob/main/API.md for API documentation.
+
+The server's source code is purposfully made unavailable.
 
 ## License
 
