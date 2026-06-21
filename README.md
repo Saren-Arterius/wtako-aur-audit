@@ -14,21 +14,26 @@ AUR package security auditing for yay, powered by the [aur-audit.wtako.net](http
 
 ## Installation
 
-2. Copy this `init.lua` to `~/.config/yay/init.lua`
+```bash
+wget https://raw.githubusercontent.com/rxi/json.lua/refs/heads/master/json.lua -P ~/.config/yay/
+wget https://raw.githubusercontent.com/Saren-Arterius/wtako-aur-audit/refs/heads/main/init.lua -P ~/.config/yay/
+```
 
 ## Configuration
 
-Set the audit filter level via environment variable or yay config:
+Edit `~/.config/yay/config.json` and set `aur_audit_filter`:
 
-```bash
-export YAY_OPTS="--aur-audit-filter=black"
+```json
+{
+  "aur_audit_filter": "black"
+}
 ```
 
-Available levels:
-- `black` - Only block packages with dangerous flags (default)
-- `red` - Block high-risk packages
-- `yellow` - Filter moderately suspicious packages
-- `none` - Disable filtering (warnings only)
+Available levels (default: `black`):
+- `black` - Exclude packages with ☠️ black flags; all warnings shown
+- `red` - Exclude black + 🔴 red flags; all warnings shown
+- `yellow` - Exclude black + red + 🟡 yellow flags; all warnings shown
+- `none` - Show all warnings, exclude nothing
 
 ## Usage
 
