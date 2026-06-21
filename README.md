@@ -6,8 +6,6 @@ See the frontend at https://wtako.net/services/aur-audit
 
 ![](https://drop.wtako.net/file/2c2425f854673e2d8d2e81102d183ce57e53160e.png)
 
-![](https://drop.wtako.net/file/ee9c863c9275b971ac7b35f32a0e0879a023dd05.png)
-
 ## Features
 
 - **Real-time scanning** - Check AUR packages against known security risks
